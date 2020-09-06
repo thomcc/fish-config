@@ -1,0 +1,3 @@
+fish_variables
+# not actually sensitive but who knows.
+conf.d/ssh_init.fish
