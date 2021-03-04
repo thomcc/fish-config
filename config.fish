@@ -14,6 +14,10 @@ complete -c subl3 -w subl
 
 alias git=hub
 
+if command -sq rbenv && status --is-interactive
+    source (rbenv init -|psub)
+end
+
 wait
 
 if test -n "$XTERM_VERSION"
