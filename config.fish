@@ -20,6 +20,10 @@ end
 
 wait
 
+if test "$TERM_PROGRAM" = iTerm.app && not string match -q -- 'eterm*' "$TERM"
+    set -gx fish_emoji_width 2
+end
+
 if test -n "$XTERM_VERSION"
     set -gx LC_CTYPE en_US.UTF-8
     set -gx LC_ALL en_US.UTF-8
