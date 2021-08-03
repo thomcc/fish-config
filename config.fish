@@ -28,5 +28,13 @@ if test -n "$XTERM_VERSION"
     set -gx LC_CTYPE en_US.UTF-8
     set -gx LC_ALL en_US.UTF-8
     set -gx LANG en_US.UTF-8
+    set -l xtver (string sub --start 7 --end -1 -- "$XTERM_VERSION")
+    if string match -qr "[0-9]{3}" -- "$xtver" && test "$xtver" -gt "360"
+        set -gx TERM "xterm-direct"
+    end
     #set -g NOICONFONT 1
+end
+
+if string match -q "* mono" "$ITERM_PROFILE"
+    set -g NOICONFONT mono
 end

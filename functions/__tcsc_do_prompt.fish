@@ -23,7 +23,7 @@ function __tcsc_colors_default -d 'Set default color theme'
     set -q tcsc_color_bg_normal; or set -g tcsc_color_bg_normal 444
     set -q tcsc_text_light; or set -g tcsc_text_light white
     set -q tcsc_text_dark; or set -g tcsc_text_dark black
-    set -q tcsc_color_cwd; or set -g tcsc_color_cwd 89c294 #7963e6
+    set -q tcsc_color_cwd; or set -g tcsc_color_cwd 89c294 # 7963e6
     set -q tcsc_color_failed; or set -g tcsc_color_failed red
     set -q tcsc_color_jobs; or set -g tcsc_color_jobs $tcsc_text_light
     set -q tcsc_color_root; or set -g tcsc_color_root red
@@ -40,12 +40,12 @@ function __tcsc_colors_default -d 'Set default color theme'
 end
 
 function __tcsc_init_icons
-    if test "$NOICONFONT" = 1
+    if test "$NOICONFONT" != ""
         set -g tcsc_icon_ahead "↑"
         set -g tcsc_icon_behind "↓"
-        set -g tcsc_icon_branch "[BR]"
+        set -g tcsc_icon_branch ""
         set -g tcsc_icon_conflicted "✘"
-        set -g tcsc_icon_detached "[DETACH]"
+        set -g tcsc_icon_detached "[D]"
         set -g tcsc_icon_failed "[E]"
         set -g tcsc_icon_jobs "[J]"
         set -g tcsc_icon_modified "⊡"
@@ -368,7 +368,7 @@ function __tcsc_do_prompt
             set -g tcsc_prompt_dir r
     end
 
-    if test "$NOICONFONT" = 1
+    if test "$NOICONFONT" = "1"
         set -g tcsc_prompt_icon_pad__ ''
         set -g tcsc_separator_thin $tcsc_prompt_icon_pad__
         set -g tcsc_separator_full $tcsc_prompt_icon_pad__
