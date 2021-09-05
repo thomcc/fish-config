@@ -1,5 +1,5 @@
 function cat --description 'alias cat=bat'
-    if test -d $argv[1]
+    if set -q argv[1] && test -d $argv[1]
         exa -lah $argv
     else
         bat $argv
