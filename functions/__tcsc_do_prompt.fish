@@ -29,6 +29,7 @@ function __tcsc_colors_default -d 'Set default color theme'
     set -q tcsc_color_root; or set -g tcsc_color_root red
     set -q tcsc_color_remote; or set -g tcsc_color_remote yellow
     set -q tcsc_color_user; or set -g tcsc_color_user $tcsc_color_bg_normal
+    set -q tcsc_color_hostname; or set -g tcsc_color_hostname ae86fd
     set -q tcsc_color_venv; or set -g tcsc_color_venv magenta
     set -q tcsc_color_git_clean; or set -g tcsc_color_git_clean b090c5
     set -q tcsc_color_git_conflict; or set -g tcsc_color_git_conflict red
@@ -104,6 +105,9 @@ end
 function __tcsc_prompt_end -d 'End the prompt'
     if test "$tcsc_prompt_dir" = l
         printf "%s " (__tcsc_prompt_segment "" normal normal)
+        if test "$ITERM_INTEGRATION" = 1
+            printf "\033]133;B\007"
+        end
     else
         set_color normal -b normal
     end
@@ -174,18 +178,21 @@ end
 
 function __tcsc_prompt_hostname -d "Write out the hostname prompt"
     # Hostname, calculate just once
-    if not set -q __tcsc_prompt_hostname
-        set -g __tcsc_prompt_hostname (hostname | string split .)[1]
-    end
+    # if not set -q __tcsc_prompt_hostname
+    #     set -g __tcsc_prompt_hostname (hostname | string split .)[1]
+    # end
+
+    __tcsc_prompt_segment host $tcsc_text_dark $tcsc_color_hostname
+    printf "%s" (prompt_hostname)
 
     # Only show remote hosts
-    if set -l ppid (ps --format ppid= --pid $fish_pid | string trim)
-        switch (ps --format comm= --pid $ppid)
-            case sshd mosh-server
-                __tcsc_prompt_segment host $tcsc_text_dark $tcsc_color_remote
-                printf " at %s " $__tcsc_prompt_hostname
-        end
-    end
+    # if set -l ppid (ps --format ppid= --pid $fish_pid | string trim)
+    #     switch (ps --format comm= --pid $ppid)
+    #         case sshd mosh-server
+    #             __tcsc_prompt_segment host $tcsc_text_dark $tcsc_color_hostname
+    #             printf " at %s " $__tcsc_prompt_hostname
+    #     end
+    # end
 end
 
 function __tcsc_prompt_cwd -d "Write out current working directory"
@@ -337,7 +344,7 @@ end
 function __tcsc_prompt_duration
     if test -n "$tcsc_duration_copy"
         __tcsc_prompt_segment duration_hu $tcsc_text_dark $tcsc_color_time_slow
-        printf "%s" (__tcsc_humanize_duration $tcsc_duration_copy)
+        printf "%s " (__tcsc_humanize_duration $tcsc_duration_copy)
     end
 end
 
@@ -366,6 +373,13 @@ function __tcsc_do_prompt
             set -g tcsc_separator_thin $SEPARATORS[4]
             set -g tcsc_separator_full $SEPARATORS[2]
             set -g tcsc_prompt_dir r
+    end
+
+    if test "$ITERM_INTEGRATION" = 1 && test "$tcsc_prompt_dir" = l
+        printf "\033]133;D;%s\007" $tcsc_last_status
+        iterm2_write_remotehost_currentdir_uservars
+        # prompt mark
+        printf "\033]133;A\007"
     end
 
     if test "$NOICONFONT" = "1"
