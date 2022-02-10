@@ -1,3 +1,6 @@
 fish_variables
 # not actually sensitive but who knows.
 conf.d/ssh_init.fish
+conf.d/local.fish
+
+conf.d/fox-s3.fish

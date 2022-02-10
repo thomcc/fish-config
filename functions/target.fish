@@ -35,7 +35,7 @@ function target
             set -l arg "$argv[$i]"
             # echo "$i: $arg"
             switch $arg
-                case '--list' '-l'
+                case '--list' '-l' 'list'
                     rustc $toolchain --print=target-list $flags
                     return
                 case '-h' '--help' 'help'
