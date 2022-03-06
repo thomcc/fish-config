@@ -7,13 +7,12 @@
 # In principal this is an alias for `code`, but tries to automatically open the
 # `blah.code-workspace` in the folder in some situations. Specifically:
 #
-# - If theres 1 argument passed in. (This means in a case where this is
-#   undesirable, )
+# - If theres 1 argument passed in.
 # - If that argument doesn't start with `-`, and happens to be a directory.
 # - If that directory has a single `blah.code-workspace` file in its root.
 #
-# Then we'll open that instead. Note that this can be worked around by `subl3 --
-# <path>`, which will cause the first test to fail.
+# Then we'll open that instead. Note that this can be worked around by
+# `subl3 -- <path>`, which will cause the first condition to fail.
 function subl3 --description 'alias subl3=code'
 	set -l args $argv
 	if set -q argv[1] && not set -q argv[2] && test -d "$argv[1]" && not string match -q -- '-*' "$argv[1]"
