@@ -1,8 +1,8 @@
-# This is my "open this folder for programming" 
+# This is my "open this folder for programming" command.
 #
 # This is called `subl3` because of ancient muscle memory (going back to when I
 # used Sublime Text, but `subl` referred to Sublime Text 2, since ST3 was still
-# beta. 3 w, and so `subl` would be ). 
+# beta...)
 #
 # In principal this is an alias for `code`, but tries to automatically open the
 # `blah.code-workspace` in the folder in some situations. Specifically:
