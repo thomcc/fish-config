@@ -198,7 +198,7 @@ function fishkit -d "Create a plugin from a template" -a template
             exit
         }
 
-    ' "$index" > /dev/stderr ^ /dev/null
+    ' "$index" > /dev/stderr 2> /dev/null
 
     if test -z "$description"
         set description "Add $name description here."

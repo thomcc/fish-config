@@ -59,7 +59,7 @@ function get -d "Press any key to continue..."
     end
 
     if test $hide_input -eq 1
-        stty -icanon -echo ^ /dev/null
+        stty -icanon -echo 2> /dev/null
     end
 
     if test $hide_cursor -eq 1
@@ -70,7 +70,7 @@ function get -d "Press any key to continue..."
         set prompt "$prompt "
     end
 
-    if test "$count" -le 0 ^ /dev/null
+    if test "$count" -le 0 2> /dev/null
         set -e count
     end
 
@@ -85,7 +85,7 @@ function get -d "Press any key to continue..."
         else
             dd bs=$count count=$count
 
-        end ^ /dev/null | if awk -v setted="$default" -v rule="$rule" -v ignore_case=$ignore_case '
+        end 2> /dev/null | if awk -v setted="$default" -v rule="$rule" -v ignore_case=$ignore_case '
             {
                 print
                 if ($0 == "" && setted != "") exit 1
@@ -133,7 +133,7 @@ function get -d "Press any key to continue..."
     end
 
     if test $hide_input -eq 1
-        stty icanon echo > /dev/stderr ^ /dev/null
+        stty icanon echo > /dev/stderr 2> /dev/null
     end
 
     if test $hide_cursor -eq 1

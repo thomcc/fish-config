@@ -1,3 +1,4 @@
+
 function gitup
     set -l here (pwd | string replace "$HOME" "~")
     set -l loginfo (printf "\e[36;2m[\e[96;1minfo\e[36;22;2m@\e[22m%s\e[36;2m]:\e[m" "$here")
@@ -5,7 +6,7 @@ function gitup
     set -l logerr (printf "\e[31;2m[\e[91;22;1mfail\e[31;22;2m@\e[22m%s\e[31;2m]:\e[m" "$here")
     if not test -d ./.git
         echoerr "$logerr not in a gitrepo? unsure."
-        exit 1
+        return 1
     end
     if set -l newurl (git remote get-url origin | string replace -r '^git://github.com/' 'git@github.com:')
         echoerr "$loginfo updating origin url to `$newurl`"
@@ -18,9 +19,24 @@ function gitup
             end
         else
             echoerr "$logerr appears to have failed!"
-            exit 1
+            return 1
         end
     else
         echoerr "$loginfo seems like its already fine."
     end
 end
+
+# function gitup
+#     if not set -q argv[1]
+#     for repo in $args
+#         cd "$repo"
+#         if gitup_pwd
+#             echo "PASS: $repo"
+#             echoerr "\e[2mPASS ($repo)\e[m"
+#         else
+#             echo "FUCK: $repo"
+#             echoerr "\e[1mFUCK ($repo)\e[m"
+#         end
+#         cd -
+#     end
+# end

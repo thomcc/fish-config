@@ -32,8 +32,11 @@ if type -q osascript && string match -qr '^(Terminal.app|iTerm.app|vscode)$' -- 
                 # if test 30 -lt (string length $cmdstr)
                 #     set cmdstr (string trim -c 27 -- $cmdstr)"..."
                 # end
+                set -l message "Command `$cmdstr` finished running after $(math $duration / 1000)s"
 
-                if type -q terminal-notifier
+                if test "$TERM_PROGRAM" = "iTerm.app" && not string match -qr '[[:cntrl:]]' -- "$cmdstr"
+                    printf "\033]9;%s\007" "$message"
+                else if type -q terminal-notifier
                     terminal-notifier -activate "$bundle" \
                         -title "Command finished" \
                         -message "Command `$cmdstr` finished running after "(math $duration / 1000)"s"

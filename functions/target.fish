@@ -6,8 +6,9 @@ function target
         set -e argv[1]
     end
     set -l set_bootstrap
-    if not rustc $toolchain --version 2>/dev/null | string match -qr nightly
-        set -lx RUSTC_BOOTSTRAP 1
+    set -l rustc_v_out (rustc $toolchain --version 2>/dev/null)
+    if not string match -qr "nightly|dev" -- "$rustc_v_out"
+        set -fx RUSTC_BOOTSTRAP 1
         set set_bootstrap 1
     end
     set -l nargs (count $argv)

@@ -3,9 +3,9 @@ bind \e\[1\;6C forward-word
 bind \u2202 delete-char
 # Don't judge me.
 complete -c subl3 -w code
-if command -sq hub
-    alias git=hub
-end
+# if command -sq hub
+#     alias git=hub
+# end
 
 if test "$TERM_PROGRAM" = iTerm.app && not string match -q -- 'eterm*' "$TERM"
     set -gx fish_emoji_width 2
@@ -24,4 +24,15 @@ end
 
 if string match -q "* mono" "$ITERM_PROFILE"
     set -g NOICONFONT mono
+end
+
+# `set -U THIS_MACHINE_NEEDS_GPG_TTY 1` to enable this annoying hack.
+if test "$THIS_MACHINE_NEEDS_GPG_TTY"
+    set -gx GPG_TTY (tty)
+end
+
+if test "Darwin" = "$(uname -s)"
+    if not contains -- "/usr/local/bin" $PATH
+        set PATH $PATH "/usr/local/bin"
+    end
 end
