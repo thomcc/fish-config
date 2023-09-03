@@ -10,22 +10,28 @@ if type -q osascript && string match -qr '^(Terminal.app|iTerm.app|vscode)$' -- 
 
         if test "$duration" -gt "$notify_threshold_ms"
             set -l app
-            set -l bundle
+            # set -l bundle "$__CFBundleIdentifier"
+            set -l is_front true
             switch "$TERM_PROGRAM"
                 case 'iTerm.app'
                     set app iTerm
-                    set bundle com.googlecode.iterm2
+                    # set bundle com.googlecode.iterm2
                 case 'Terminal.app'
                     set app Terminal
-                    set bundle com.apple.Terminal
+                    # set bundle com.apple.Terminal
                 case 'vscode'
-                    set app Code
-                    set bundle com.microsoft.VSCode
+                    if "$__CFBundleIdentifier" = "com.microsoft.VSCodeInsiders"
+                        # set bundle com.microsoft.VSCodeInsiders
+                        set app 'Code - Insiders'
+                    else
+                        # set bundle com.microsoft.VSCode
+                        set app Code
+                    end
                 case '*'
                     # Shouldn't be possible.
                     return 1
             end
-            set -l is_front (osascript -e "tell application \"$app\" to frontmost")
+            set is_front (osascript -e "tell application \"$app\" to frontmost")
             if test "$is_front" = "false"
                 set -l cmdstr "$cmd"
                 # avoid a massive command... Think more about this...
@@ -36,10 +42,10 @@ if type -q osascript && string match -qr '^(Terminal.app|iTerm.app|vscode)$' -- 
 
                 if test "$TERM_PROGRAM" = "iTerm.app" && not string match -qr '[[:cntrl:]]' -- "$cmdstr"
                     printf "\033]9;%s\007" "$message"
-                else if type -q terminal-notifier
-                    terminal-notifier -activate "$bundle" \
-                        -title "Command finished" \
-                        -message "Command `$cmdstr` finished running after "(math $duration / 1000)"s"
+                # else if type -q terminal-notifier
+                #     terminal-notifier -activate "$bundle" \
+                #         -title "Command finished" \
+                #         -message "Command `$cmdstr` finished running after "(math $duration / 1000)"s"
                 else
                     # avoid bustage when cmdstr has quotes or escapes
                     # applescript doesn't like
