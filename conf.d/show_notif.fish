@@ -20,7 +20,7 @@ if type -q osascript && string match -qr '^(Terminal.app|iTerm.app|vscode)$' -- 
                     set app Terminal
                     # set bundle com.apple.Terminal
                 case 'vscode'
-                    if "$__CFBundleIdentifier" = "com.microsoft.VSCodeInsiders"
+                    if test "$__CFBundleIdentifier" = "com.microsoft.VSCodeInsiders"
                         # set bundle com.microsoft.VSCodeInsiders
                         set app 'Code - Insiders'
                     else
