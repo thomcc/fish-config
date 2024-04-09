@@ -16,8 +16,7 @@
 
 if not set -q DISABLE_ITERM_INTEGRATION &&
     test "$TERM_PROGRAM" = "iTerm.app" &&
-    string match -qr '^(eterm|dumb|linux$)' -- "$TERM"
-
+    not string match -qr '^(eterm|dumb|linux$)' -- "$TERM"
     if status --is-interactive && not string match -qr '^screen(-256color)?$' -- "$ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX$TERM"
         # full integration
         set -gx ITERM_INTEGRATION 1
@@ -36,9 +35,11 @@ if set -q ITERM_INTEGRATION
     if not test -d "$datadir" && test -d "$HOME/.config/fish/vendor/iterm2/bin"
         set datdir "$HOME/.config/fish/vendor/iterm2/bin"
     end
+
     if test -d "$datadir"
         fish_add_path -aP "$datadir"
     end
+
     if test -d "$funcdir" && \
             not functions -q iterm2_set_user_var && \
             not contains "$funcdir" $fish_function_path
@@ -47,7 +48,6 @@ if set -q ITERM_INTEGRATION
 end
 
 if test "$ITERM_INTEGRATION" = "1" && not functions -q -- iterm2_preexec
-
     # Tell terminal to create a mark at this location
     function iterm2_preexec --on-event fish_preexec
         # For other shells we would output status here but we can't do that in fish.
@@ -70,3 +70,19 @@ if test "$ITERM_INTEGRATION" = "1" && not functions -q -- iterm2_preexec
     iterm2_write_remotehost_currentdir_uservars
     printf "\033]1337;ShellIntegrationVersion=17;shell=fish\007"
 end
+# alias imgcat=$HOME/.iterm2/imgcat;
+# alias imgls=$HOME/.iterm2/imgls;
+# alias it2api=$HOME/.iterm2/it2api;
+# alias it2attention=$HOME/.iterm2/it2attention;
+# alias it2check=$HOME/.iterm2/it2check;
+# alias it2copy=$HOME/.iterm2/it2copy;
+# alias it2dl=$HOME/.iterm2/it2dl;
+# alias it2getvar=$HOME/.iterm2/it2getvar;
+# alias it2git=$HOME/.iterm2/it2git;
+# alias it2profile=$HOME/.iterm2/it2profile;
+# alias it2setcolor=$HOME/.iterm2/it2setcolor;
+# alias it2setkeylabel=$HOME/.iterm2/it2setkeylabel;
+# alias it2ssh=$HOME/.iterm2/it2ssh;
+# alias it2tip=$HOME/.iterm2/it2tip;
+# alias it2ul=$HOME/.iterm2/it2ul;
+# alias it2universion=$HOME/.iterm2/it2universion

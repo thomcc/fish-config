@@ -13,6 +13,10 @@ if test -d "$HOME/.nvm"
         __tcsc_ensure_nvm_initialized
         command npm $argv
     end
+    function corepack
+        __tcsc_ensure_nvm_initialized
+        command corepack $argv
+    end
     function npx
         __tcsc_ensure_nvm_initialized
         command npx $argv
@@ -32,7 +36,13 @@ if test -d "$HOME/.nvm"
                     command tsc $argv
                 end
             end
-            # set -l aliased tsc pnpm pnmx yo 'yo-complete' tsserver foam tslint
+            if test -x "$nvm_default_bindir/yarn"
+                function yarn
+                    __tcsc_ensure_nvm_initialized
+                    command yarn $argv
+                end
+            end
+            # set -l aliased tsc pnpm pnmx yo 'yo-complete' tsserver foam tslint yarn
             # for name in $aliased
             #     if not type -q $name
             #         echo "function $name; __tcsc_ensure_nvm_initialized; command $name \$argv; end" | source
