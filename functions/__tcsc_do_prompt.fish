@@ -275,17 +275,22 @@ function __tcsc_prompt_git -d "Write out the git prompt"
         # Get all info about branch
         for i in $tcsc_git_status
             # First two characters show the status
-            switch (echo "$i" | string sub --length 2)
-                case "U?" "?U" DD AA
+            set -l val (echo "$i" | string sub --length 2)
+            switch "$val"
+                case DD AA UA AU UD DU UU
                     set conflicted (math $conflicted+1)
-                case "?M" "?D"
+                case " M" " D" MM MD TM TD AM AD RM RD CM CD
                     set modified (math $modified+1)
-                case "\?\?"
-                    set untracked (math $untracked+1)
                 case "##"
                     # Branch name; do nothing
+                case "\?\?"
+                    set untracked (math $untracked+1)
                 case "*"
-                    set staged (math $staged+1)
+                    if test "??" = "$val"
+                        set untracked (math $untracked+1)
+                    else
+                        set staged (math $staged+1)
+                    end
             end
         end
         # Get number of stashed files
